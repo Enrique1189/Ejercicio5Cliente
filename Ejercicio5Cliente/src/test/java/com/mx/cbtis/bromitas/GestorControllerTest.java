@@ -12,6 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +33,22 @@ import com.mx.cbtis.modelo.Tareas;
 import com.mx.cbtis.modelo.Usuario;
 
 @SpringBootTest
+@Import(GestorControllerTest.RestTemplateMockConfig.class)
 public class GestorControllerTest {
+
+    /**
+     * Cliente HTTP prioritario para las pruebas. El controlador debe recibir
+     * RestTemplate por inyeccion de dependencias para utilizar este bean.
+     */
+    @TestConfiguration
+    static class RestTemplateMockConfig {
+        @Bean("restTemplateParaPruebas")
+        @Primary
+        RestTemplate restTemplateParaPruebas() {
+            return new RestTemplate();
+        }
+    }
+
 
     @Autowired
     private GestorController controller;
@@ -41,9 +60,9 @@ public class GestorControllerTest {
 
     @BeforeEach
     public void setUp() {
-        // Enlazar el MockRestServiceServer al RestTemplate inyectado por Spring
-        mockServer = MockRestServiceServer.createServer(restTemplate);
-        mockServer.reset();
+        // Intercepta las llamadas realizadas con ESTE RestTemplate.
+        // No se inicia un servidor ni se abre una conexion HTTP real.
+        mockServer = MockRestServiceServer.bindTo(restTemplate).build();
     }
 
     @Test
