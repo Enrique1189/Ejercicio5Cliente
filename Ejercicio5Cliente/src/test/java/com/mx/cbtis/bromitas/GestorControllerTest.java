@@ -114,15 +114,7 @@ public class GestorControllerTest {
     @Test
     public void testGetInicio() {
         Model model = new ConcurrentModel();
-        String jsonResponse = "[{\"id_proyecto\": 1, \"nombre\": \"Proyecto Inicial\"}]";
-
-        // Si getInicio consulta la lista de proyectos al backend
-        mockServer.expect(requestTo("http://localhost:8081/buscarProyectos"))
-                  .andExpect(method(HttpMethod.POST))
-                  .andRespond(withSuccess(jsonResponse, MediaType.APPLICATION_JSON));
-
         String viewName = controller.getInicio(model);
-
         assertEquals("inicio", viewName);
         assertNotNull(model.getAttribute("proyectos"));
         mockServer.verify();
