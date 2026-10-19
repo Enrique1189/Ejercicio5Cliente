@@ -16,10 +16,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mx.cbtis.controller.GestorController;
@@ -34,14 +34,16 @@ public class GestorControllerTest {
     @Autowired
     private GestorController controller;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     private MockRestServiceServer mockServer;
 
     @BeforeEach
     public void setUp() {
-        // Al crear RestTemplate dentro del controlador de forma manual,
-        // vinculamos MockRestServiceServer a una nueva instancia para interceptar peticiones.
-        RestTemplate restTemplate = new RestTemplate();
+        // Enlazar el MockRestServiceServer al RestTemplate inyectado por Spring
         mockServer = MockRestServiceServer.createServer(restTemplate);
+        mockServer.reset();
     }
 
     @Test
@@ -87,15 +89,24 @@ public class GestorControllerTest {
 
         ModelAndView mav = controller.setSaveUsuario(usuario);
         assertEquals("redirect:/login", mav.getViewName());
+        mockServer.verify();
     }
 
     @Test
     public void testGetInicio() {
         Model model = new ConcurrentModel();
+        String jsonResponse = "[{\"id_proyecto\": 1, \"nombre\": \"Proyecto Inicial\"}]";
+
+        // Si getInicio consulta la lista de proyectos al backend
+        mockServer.expect(requestTo("http://localhost:8081/buscarProyectos"))
+                  .andExpect(method(HttpMethod.POST))
+                  .andRespond(withSuccess(jsonResponse, MediaType.APPLICATION_JSON));
+
         String viewName = controller.getInicio(model);
 
         assertEquals("inicio", viewName);
         assertNotNull(model.getAttribute("proyectos"));
+        mockServer.verify();
     }
 
     @Test
@@ -108,6 +119,7 @@ public class GestorControllerTest {
 
         ModelAndView mav = controller.setSaveProyecto(proyecto);
         assertEquals("redirect:/inicio", mav.getViewName());
+        mockServer.verify();
     }
 
     @Test
@@ -123,6 +135,7 @@ public class GestorControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(model.getAttribute("listaProyectos"));
+        mockServer.verify();
     }
 
     @Test
@@ -136,6 +149,7 @@ public class GestorControllerTest {
 
         ModelAndView mav = controller.eliminarProyecto(proyecto);
         assertEquals("redirect:/inicio", mav.getViewName());
+        mockServer.verify();
     }
 
     @Test
@@ -151,6 +165,7 @@ public class GestorControllerTest {
 
         ResponseEntity<Object> response = controller.updateProyecto(proyecto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockServer.verify();
     }
 
     @Test
@@ -164,6 +179,7 @@ public class GestorControllerTest {
 
         ResponseEntity<Usuario> response = controller.verificarUsuario(usuario);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockServer.verify();
     }
 
     @Test
@@ -179,6 +195,7 @@ public class GestorControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(model.getAttribute("listaUsuarios"));
+        mockServer.verify();
     }
 
     @Test
@@ -195,6 +212,7 @@ public class GestorControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(model.getAttribute("tareas"));
+        mockServer.verify();
     }
 
     @Test
@@ -211,6 +229,7 @@ public class GestorControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(model.getAttribute("comentarios"));
+        mockServer.verify();
     }
 
     @Test
@@ -228,6 +247,7 @@ public class GestorControllerTest {
         assertNotNull(model.getAttribute("tarea"));
         assertNotNull(model.getAttribute("comentarios"));
         assertNotNull(model.getAttribute("listaUsuarios"));
+        mockServer.verify();
     }
 
     @Test
@@ -252,6 +272,7 @@ public class GestorControllerTest {
 
         assertEquals("redirect:/proyecto", mav.getViewName());
         assertEquals(5, mav.getModel().get("id_proyecto"));
+        mockServer.verify();
     }
 
     @Test
@@ -264,6 +285,7 @@ public class GestorControllerTest {
 
         String viewName = controller.setSaveComentario(comentario);
         assertEquals("proyecto", viewName);
+        mockServer.verify();
     }
 
     @Test
@@ -279,6 +301,7 @@ public class GestorControllerTest {
 
         ResponseEntity<Object> response = controller.updateTarea(tarea);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockServer.verify();
     }
 
     @Test
@@ -292,6 +315,7 @@ public class GestorControllerTest {
 
         ModelAndView mav = controller.eliminarTarea(tarea);
         assertEquals("redirect:/proyecto", mav.getViewName());
+        mockServer.verify();
     }
 
     @Test
@@ -304,6 +328,7 @@ public class GestorControllerTest {
 
         ResponseEntity<Integer> response = controller.verificarTarea(tarea);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockServer.verify();
     }
 
     @Test
@@ -316,6 +341,7 @@ public class GestorControllerTest {
 
         ResponseEntity<Integer> response = controller.cambiosTareas(tarea);
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockServer.verify();
     }
 
     @Test
@@ -328,6 +354,7 @@ public class GestorControllerTest {
 
         ResponseEntity<Object> response = controller.consultarTareas();
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockServer.verify();
     }
 
     @Test
@@ -340,5 +367,6 @@ public class GestorControllerTest {
 
         ResponseEntity<Object> response = controller.consultarComentarios();
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockServer.verify();
     }
 }
