@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tareas.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Ejercicio5Cliente</a> &gt; <a href="index.source.html" class="el_package">com.mx.cbtis.modelo</a> &gt; <span class="el_source">Tareas.java</span></div><h1>Tareas.java</h1><pre class="source lang-java linenums">package com.mx.cbtis.modelo;
+
+public class Tareas {
+
+	private Integer id_tarea;
+	private String nombre;
+	private String descripcion;
+	private String fecha_vencimiento;
+	private String lista;
+	private String estado;
+	private Integer id_proyecto;
+
+	public Tareas() {
+<span class="fc" id="L14">		super();</span>
+<span class="fc" id="L15">	}</span>
+
+	public Tareas(Integer id_tarea, String nombre, String descripcion, String fecha_vencimiento, String lista,
+			String estado, Integer id_proyecto) {
+<span class="nc" id="L19">		super();</span>
+<span class="nc" id="L20">		this.id_tarea = id_tarea;</span>
+<span class="nc" id="L21">		this.nombre = nombre;</span>
+<span class="nc" id="L22">		this.descripcion = descripcion;</span>
+<span class="nc" id="L23">		this.fecha_vencimiento = fecha_vencimiento;</span>
+<span class="nc" id="L24">		this.lista = lista;</span>
+<span class="nc" id="L25">		this.estado = estado;</span>
+<span class="nc" id="L26">		this.id_proyecto = id_proyecto;</span>
+<span class="nc" id="L27">	}</span>
+
+	public Integer getId_tarea() {
+<span class="fc" id="L30">		return id_tarea;</span>
+	}
+
+	public void setId_tarea(Integer id_tarea) {
+<span class="fc" id="L34">		this.id_tarea = id_tarea;</span>
+<span class="fc" id="L35">	}</span>
+
+	public String getNombre() {
+<span class="fc" id="L38">		return nombre;</span>
+	}
+
+	public void setNombre(String nombre) {
+<span class="fc" id="L42">		this.nombre = nombre;</span>
+<span class="fc" id="L43">	}</span>
+
+	public String getDescripcion() {
+<span class="fc" id="L46">		return descripcion;</span>
+	}
+
+	public void setDescripcion(String descripcion) {
+<span class="fc" id="L50">		this.descripcion = descripcion;</span>
+<span class="fc" id="L51">	}</span>
+
+	public String getFecha_vencimiento() {
+<span class="fc" id="L54">		return fecha_vencimiento;</span>
+	}
+
+	public void setFecha_vencimiento(String fecha_vencimiento) {
+<span class="fc" id="L58">		this.fecha_vencimiento = fecha_vencimiento;</span>
+<span class="fc" id="L59">	}</span>
+
+	public String getLista() {
+<span class="fc" id="L62">		return lista;</span>
+	}
+
+	public void setLista(String lista) {
+<span class="fc" id="L66">		this.lista = lista;</span>
+<span class="fc" id="L67">	}</span>
+
+	public String getEstado() {
+<span class="fc" id="L70">		return estado;</span>
+	}
+
+	public void setEstado(String estado) {
+<span class="fc" id="L74">		this.estado = estado;</span>
+<span class="fc" id="L75">	}</span>
+
+	public Integer getId_proyecto() {
+<span class="fc" id="L78">		return id_proyecto;</span>
+	}
+
+	public void setId_proyecto(Integer id_proyecto) {
+<span class="fc" id="L82">		this.id_proyecto = id_proyecto;</span>
+<span class="fc" id="L83">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
